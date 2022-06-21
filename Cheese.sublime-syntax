@@ -1,0 +1,35 @@
+%YAML 1.2
+---
+file_extensions:
+  - chs
+scope: source.cheese
+contexts:
+  main:
+
+    - match: '~'
+      scope: punctuation.definition.comment.example-c
+      push: line_comment
+
+    - match: '\b(jmp|set|add|sub|mul|div|mod|psh|pop|swp|inc|dec|clr|cjp|int|pnt)\b'
+      scope: keyword.cheese
+
+    - match: '%\b(x[0-9A-F]+|d[0-9]+|b[01])\b'
+      scope: variable.function.cheese
+
+    - match: '%%\b(x[0-9A-F]+|d[0-9]+|b[01])\b'
+      scope: variable.function.cheese
+
+    - match: '\b(x[0-9A-F]+|d[0-9]+|b[01])\b'
+      scope: constant.numeric.cheese
+
+    - match: '@\b[a-zA-Z0-9_]+\b'
+      scope: entity.name.cheese
+
+    - match: '\b[a-zA-Z0-9]+\b'
+      scope: invalid.cheese
+
+
+  line_comment:
+    - meta_scope: comment.cheese
+    - match: $
+      pop: true
