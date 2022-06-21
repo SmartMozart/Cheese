@@ -1,5 +1,9 @@
 # Cheese
-A random x86-64 assembly inspired interpreted language written in python (for now)
+A random x86-64 assembly inspired interpreted language written in python (for now).
+
+I included calculator.chs as an example program.
+
+I also included a compiled version of the interpreter for x64 windows but not for anything else (yet) and syntax highlighting for sublime text.
 
 ## Commands:
 
