@@ -22,9 +22,9 @@ A random x86-64 assembly inspired interpreted language written in python (for no
 
 ## Types:
 
-- d dec
-- x hex
-- b bin
+- d decimal
+- x hexidecimal
+- b binary
 - %[integer] returns value of register
 - @ label
 
