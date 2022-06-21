@@ -1,42 +1,41 @@
 # Cheese
 A random x86-64 assembly inspired interpreted language written in python (for now)
 
-#commands:
+## Commands:
 
-jmp <arg> : jumps to line
-cjp <arg> <arg> : jumps to first argument if second argument is zero
-set <arg> <arg> : sets a registers value to second argument
-add <arg> <arg> : adds a registers value by second argument
-sub <arg> <arg> : subtracts a registers value by second argument
-mul <arg> <arg> : multiplies a registers value by second argument
-div <arg> <arg> : divides a registers value by second argument and discards remainder
-mod <arg> <arg> : adds a registers value by second argument
-psh <arg> : pushes register value onto stack
-pop <arg> : pops top value of stack into register
-swp <arg> : swaps registers value with top of stack
-inc <arg> : increments register
-dec <arg> : decrements register
-clr <arg> : resets register to zero
-int : interrupts program to display contents of $xf00-$xfff
-~comment
+- jmp : jumps to line
+- cjp : jumps to first argument if second argument is zero
+- set : sets a registers value to second argument
+- add : adds a registers value by second argument
+- sub : subtracts a registers value by second argument
+- mul : multiplies a registers value by second argument
+- div : divides a registers value by second argument and discards remainder
+- mod : adds a registers value by second argument
+- psh : pushes register value onto stack
+- pop : pops top value of stack into register
+- swp : swaps registers value with top of stack
+- inc : increments register
+- dec : decrements register
+- clr : resets register to zero
+- int : interrupts program to display contents of $xf00-$xfff
+- ~comment
 
-#types:
+## Types:
 
-d<dec> dec
-x<hex> hex
-b<bin> bin
-%<number> value of register
-<number> numerical value
-@<label> label
+- d dec
+- x hex
+- b bin
+- %[integer] returns value of register
+- @ label
 
-#syntax:
+## Syntax:
 
-<cmd> <arg> <arg>
-@<label>
-~<comment>
+- [cmd] [arg(s)]
 
-#memory:
-x000-xdef : program memory
-xdf0-xdff : important program statistics
-xe00-xeff : user input
-xf00-xfff : program output (printed with the int command)
+## Memory:
+- x000-xDEF : program memory
+- xDF0-xDFF : important program statistics
+- xE00-xEFF : user input
+- xF00-xFFF : program output (printed with the int command)
+
+I'm pretty bad with md so forgive my bad formatting
