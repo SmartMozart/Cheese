@@ -1,4 +1,4 @@
-cjp x1 %xE00
+cjp x0 %xE00
 set xA0 xE00
 @cvt_loop
 cjp @end_cvt_loop %%xA0
@@ -62,7 +62,7 @@ jmp @print
 int
 set x0 xFFF
 @clp
-cjp x1 %x0
+cjp x0 %x0
 clr %x0
 dec x0
 jmp @clp
