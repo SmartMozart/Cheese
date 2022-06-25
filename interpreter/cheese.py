@@ -12,11 +12,11 @@ types = {'x':16,'b':2,'d':10}
 
 
 # error handler
-def error(message, typerr=0, incline=1):
+def error(message, typerr=0):
 	err = 'ERROR'
 	if typerr:
 		err = 'WARN'
-	print(f'[{err}]: {message} {f"(Line {line+1})" if incline else ""}')
+	print(f'[{err}]: {message} (Line {line+1})')
 	if not typerr:
 		input()
 		sys.exit()
@@ -42,7 +42,7 @@ def interpret_cmd(tokens):
 			continue
 		tk = token.replace('%','')
 		if tk[0] not in types:
-			error(f'Invalid type "{tk[0]}"')
+			error(f'Unknown type "{tk[0]}"')
 		try:
 			value = int(tk[1:],types[tk[0]])
 		except:
@@ -51,13 +51,9 @@ def interpret_cmd(tokens):
 			try:
 				value = memory[value]
 				if token.startswith('%%'):
-					try:
-						value = memory[value]
-					except:
-						error(f'Memory address "{value}" does not exist')
-			except Exception as err:
-				print(err)
-				error(f'Memory address "{err}" does not exist')
+					value = memory[value]
+			except:
+				error(f'Memory address "{value}" does not exist')
 		itokens.append(value)
 	tokens = itokens
 
@@ -65,9 +61,8 @@ def interpret_cmd(tokens):
 	# interpret the command
 	try:
 		if cmd == 'jmp':
-			line = tokens[0]-2
+			line = tokens[0]-1
 			return
-
 		if cmd == 'set':
 			memory[tokens[0]] = tokens[1]
 			memory[tokens[0]] %= 4294967296
@@ -92,7 +87,7 @@ def interpret_cmd(tokens):
 			try:
 				memory[tokens[0]] //= tokens[1]
 			except:
-				error('Divide by Zero')
+				error('Divide by zero')
 			memory[tokens[0]] %= 4294967296
 			return
 
@@ -100,17 +95,18 @@ def interpret_cmd(tokens):
 			try:
 				memory[tokens[0]] %= tokens[1]
 			except:
-				error('Divide by Zero')
+				error('Divide by zero')
 			memory[tokens[0]] %= 4294967296
 			return
 
 		if cmd == 'psh':
 			stack.append(tokens[0])
 			if len(stack) > 256:
-				error('Stack Overflow')
+				error('Stack overflow')
 			return
 
 		if cmd == 'pop':
+			a = memory[tokens[0]]
 			try:
 				memory[tokens[0]] = stack[-1]
 				stack = stack[:-1]
@@ -119,6 +115,7 @@ def interpret_cmd(tokens):
 			return
 
 		if cmd == 'swp':
+			a = memory[tokens[0]]
 			try:
 				memory[tokens[0]], stack[-1] = stack[-1], memory[tokens[0]]
 			except:
@@ -141,7 +138,7 @@ def interpret_cmd(tokens):
 
 		if cmd == 'cjp':
 			if not tokens[1]:
-				line = tokens[0]-2
+				line = tokens[0]-1
 			return
 
 
@@ -153,7 +150,7 @@ def interpret_cmd(tokens):
 				try:
 					intret += chr(value)
 				except:
-					error(f'Invalid Character "{value}"')
+					error(f'Invalid character "{value}"')
 			print(intret)
 
 		if cmd == 'pnt':
@@ -161,7 +158,7 @@ def interpret_cmd(tokens):
 			return
 
 	except:
-		error(f'Unknown Error')
+		error(f'Memory address "{tokens[0]}" does not exist')
 
 
 # user input loop
@@ -171,7 +168,7 @@ def uiloop():
 		ui = input()
 		for index, char in enumerate(ui):
 			if index > 255:
-				error('Input exceeds address xEFF',0,0)
+				error('Input exceeds address xEFF')
 			memory[index+3584] = ord(char)
 
 
@@ -198,14 +195,14 @@ while line < len(main):
 	if debug: print(lc)
 	if lc == '' or lc.startswith('@') or lc.startswith('~'):
 		line+=1
-		memory[3568] = line+1
+		memory[3568] = line
 		continue
 	tokens = lc.split(' ')
 	if tokens[0] not in cmds:
 		error(f'Unknown command "{tokens[0]}"')
 	interpret_cmd(tokens)
 	line += 1
-	memory[3568] = line+1
+	memory[3568] = line
 
 
 if debug: print(stack, memory)
@@ -229,7 +226,7 @@ input()
 # inc <arg> : increments register
 # dec <arg> : decrements register
 # clr <arg> : resets register to zero
-# int : interrupts program to display contents of $xf00-$xfff
+# int : interrupts program to display contents of xF00-xFFF
 # ~comment
 
 #types:
@@ -249,7 +246,7 @@ input()
 
 # memory:
 
-# x000-xdef : program memory
-# xdf0-xdff : important program statistics
-# xe00-xeff : user input
-# xf00-xfff : program output (printed with the int command)
+#x000-xDEF : program memory
+#xDF0-xDFF : important program statistics
+#xE00-xEFF : user input
+#xF00-xFFF : program output (printed with the int command)
